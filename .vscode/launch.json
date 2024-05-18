@@ -16,7 +16,7 @@
 				"${workspaceRoot}/server/out/**/*.js"
 			],
 			"autoAttachChildProcesses": true,
-			"preLaunchTask": "build-and-watch"
+			"preLaunchTask": "npm-build"
 		}
 	]
 }

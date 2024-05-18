@@ -10,7 +10,7 @@ export default [
   {
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json'
+        project: './tsconfig.lint.json'
       }
     },
     rules: {
@@ -22,7 +22,10 @@ export default [
     ignores: [
       'dist',
       'out',
-      '.vscode-test'
+      '.vscode-test',
+      'client/out',
+      'server/out',
+      'sampleWorkspace'
     ]
   }
 ];
