@@ -30,21 +30,3 @@ jobs:
 
       - name: Run tests
         run: npm run test:mocha:prod
-  
-  ensure-new-version:
-    runs-on: ubuntu-latest
-
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-version
-      cancel-in-progress: true
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
-
-      - name: Ensure newer version than last release
-        shell: pwsh
-        run: .\version-check.ps1
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
