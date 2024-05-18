@@ -1,0 +1,30 @@
+{
+    "files.exclude": {
+        "out": true,
+        "syntaxes": true,
+        "client/out": true,
+        "server/out": true,
+        "package-lock.json": true,
+        "client/package-lock.json": true,
+        "server/package-lock.json": true
+    },
+    "editor.folding": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.insertSpaces": false,
+    "typescript.tsc.autoDetect": "off",
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "[github-actions-workflow]": {
+        "editor.tabSize": 2
+    },
+    "cmake.configureOnOpen": false,
+    "mochaExplorer.autoload": "onStart",
+    "mochaExplorer.debuggerConfig": "Debug Mocha Tests",
+    "mochaExplorer.exit": true,
+    "mochaExplorer.globImplementation": "vscode",
+    "mochaExplorer.ui": "tdd",
+}

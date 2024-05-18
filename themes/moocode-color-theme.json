@@ -1,0 +1,161 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "MOOcode theme",
+  "include": "./dark_modern.json",
+  "tokenColors": [
+    {
+      "scope": "comment.moocode",
+      "settings": {
+        "foreground": "#6A9955",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "string.quoted.double.moocode",
+      "settings": {
+        "foreground": "#CE9178"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.flow.return.moocode",
+        "keyword.control.conditional.if.moocode",
+        "keyword.control.conditional.elseif.moocode",
+        "keyword.control.conditional.else.moocode",
+        "keyword.control.conditional.closure.moocode",
+        "keyword.control.loop.for.moocode",
+        "keyword.control.loop.for.closure.moocode",
+        "keyword.control.loop.while.moocode",
+        "keyword.control.loop.while.closure.moocode",
+        "keyword.control.exception.try.moocode",
+        "keyword.control.exception.except.moocode",
+        "keyword.control.exception.finally.moocode",
+        "keyword.control.exception.closure.moocode",
+        "keyword.in.moocode"
+      ],
+      "settings": {
+        "foreground": "#C586C0"
+      }
+    },
+    {
+      "scope": [
+        "keyword.in.moocode",
+        "constant.boolean.true.moocode",
+        "constant.boolean.false.moocode",
+        "entity.name.predefined.player.moocode",
+        "entity.name.predefined.this.moocode",
+        "entity.name.predefined.caller.moocode",
+        "entity.name.predefined.verb.moocode",
+        "entity.name.predefined.argstr.moocode",
+        "entity.name.predefined.args.moocode",
+        "entity.name.predefined.dobjstr.moocode",
+        "entity.name.predefined.dobj.moocode",
+        "entity.name.predefined.prepstr.moocode",
+        "entity.name.predefined.iobjstr.moocode",
+        "entity.name.predefined.iobj.moocode"
+      ],
+      "settings": {
+        "foreground": "#569CD6"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator.assignment.moocode",
+        "keyword.operator.assignment.map.moocode",
+        "keyword.operator.logical.not.moocode",
+        "keyword.operator.logical.and.moocode",
+        "keyword.operator.logical.or.moocode",
+        "keyword.operator.relational.equal.moocode",
+        "keyword.operator.relational.unequal.moocode",
+        "keyword.operator.relational.less-than.moocode",
+        "keyword.operator.relational.greater-than.moocode",
+        "keyword.operator.relational.less-or-equal.moocode",
+        "keyword.operator.relational.greater-or-equal.moocode",
+        "keyword.operator.arithmetic.add.moocode",
+        "keyword.operator.arithmetic.substract.moocode",
+        "keyword.operator.arithmetic.multiply.moocode",
+        "keyword.operator.arithmetic.divide.moocode",
+        "keyword.operator.arithmetic.modulo.moocode",
+        "punctuation.terminator.statement.moocode",
+        "punctuation.separator.comma.moocode",
+        "punctuation.separator.decimals.moocode",
+        "punctuation.parenthesis.open.moocode",
+        "punctuation.parenthesis.close.moocode",
+        "punctuation.curlybrace.open.moocode",
+        "punctuation.curlybrace.close.moocode",
+        "punctuation.accessor.property.moocode",
+        "punctuation.accessor.verb.moocode"
+      ],
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": [
+        "constant.datatype.integer.moocode",
+        "constant.datatype.number.moocode",
+        "constant.datatype.float.moocode",
+        "constant.datatype.object.moocode",
+        "constant.datatype.string.moocode",
+        "constant.datatype.list.moocode",
+        "constant.datatype.error.moocode",
+        "constant.datatype.boolean.moocode",
+        "constant.datatype.map.moocode",
+        "constant.datatype.waif.moocode",
+        "constant.datatype.anon.moocode",
+        "constant.errortype.none.moocode",
+        "constant.errortype.type-mismatch.moocode",
+        "constant.errortype.division-by-zero.moocode",
+        "constant.errortype.permission-denied.moocode",
+        "constant.errortype.property-not-found.moocode",
+        "constant.errortype.verb-not-found.moocode",
+        "constant.errortype.variable-not-found.moocode",
+        "constant.errortype.invalid-indirection.moocode",
+        "constant.errortype.recursive-move.moocode",
+        "constant.errortype.too-many-verb-calls.moocode",
+        "constant.errortype.range.moocode",
+        "constant.errortype.incorrect-number-of-arguments.moocode",
+        "constant.errortype.move-refused-by-destination.moocode",
+        "constant.errortype.invalid-argument.moocode",
+        "constant.errortype.resource-limit-exceeded.moocode",
+        "constant.errortype.float-arithmetic.moocode",
+        "constant.errortype.file-system.moocode",
+        "constant.errortype.execution.moocode",
+        "constant.errortype.interrupted.moocode"
+      ],
+      "settings": {
+        "foreground": "#569CD6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "constant.numeric.moocode",
+      "settings": {
+        "foreground": "#B5CEA8"
+      }
+    },
+    {
+      "scope": "entity.name.function.built-in.moocode",
+      "settings": {
+        "foreground": "#DCDCAA"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.moocode",
+        "entity.name.property.moocode",
+        "entity.name.variable.moocode"
+      ],
+      "settings": {
+        "foreground": "#9CDCFE"
+      }
+    },
+    {
+      "scope": "entity.name.variable.corified.moocode",
+      "settings": {
+        "foreground": "#4FC1FF",
+        "fontStyle": "italic bold"
+      }
+    }
+  ]
+}
