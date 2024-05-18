@@ -28,5 +28,10 @@ jobs:
       - name: npm install
         run: npm ci
 
+      - name: npm install (server)
+        run: |
+          cd server
+          npm ci
+
       - name: Run tests
-        run: npm run test:mocha:prod
+        run: npm test
