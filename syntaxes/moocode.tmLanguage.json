@@ -1,0 +1,408 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "moocode",
+  "scopeName": "source.moocode",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#entities"
+    },
+    {
+      "include": "#punctuations"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.moocode",
+          "match": "^\"[^\"]*\";$"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.moocode",
+      "begin": "\"",
+      "end": "\""
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.flow.return.moocode",
+          "match": "\\breturn\\b"
+        },
+        {
+          "name": "keyword.control.conditional.if.moocode",
+          "match": "\\bif\\b"
+        },
+        {
+          "name": "keyword.control.conditional.else.moocode",
+          "match": "\\belse\\b"
+        },
+        {
+          "name": "keyword.control.conditional.elseif.moocode",
+          "match": "\\belseif\\b"
+        },
+        {
+          "name": "keyword.control.conditional.closure.moocode",
+          "match": "\\bendif\\b"
+        },
+        {
+          "name": "keyword.control.loop.for.moocode",
+          "match": "\\bfor\\b"
+        },
+        {
+          "name": "keyword.control.loop.for.closure.moocode",
+          "match": "\\bendfor\\b"
+        },
+        {
+          "name": "keyword.control.loop.while.moocode",
+          "match": "\\bwhile\\b"
+        },
+        {
+          "name": "keyword.control.loop.while.closure.moocode",
+          "match": "\\bendwhile\\b"
+        },
+        {
+          "name": "keyword.control.exception.try.moocode",
+          "match": "\\btry\\b"
+        },
+        {
+          "name": "keyword.control.exception.except.moocode",
+          "match": "\\bexcept\\b"
+        },
+        {
+          "name": "keyword.control.exception.finally.moocode",
+          "match": "\\bfinally\\b"
+        },
+        {
+          "name": "keyword.control.exception.closure.moocode",
+          "match": "\\bendtry\\b"
+        },
+        {
+          "name": "keyword.in.moocode",
+          "match": "\\bin\\b"
+        },
+        {
+          "name": "keyword.operator.assignment.moocode",
+          "match": "(?<![=<>!])=(?!=)"
+        },
+        {
+          "name": "keyword.operator.assignment.map.moocode",
+          "match": "->"
+        },
+        {
+          "name": "keyword.operator.logical.not.moocode",
+          "match": "\\!(?!\\=)"
+        },
+        {
+          "name": "keyword.operator.logical.and.moocode",
+          "match": "\\&\\&"
+        },
+        {
+          "name": "keyword.operator.logical.or.moocode",
+          "match": "\\|\\|"
+        },
+        {
+          "name": "keyword.operator.relational.equal.moocode",
+          "match": "\\=\\="
+        },
+        {
+          "name": "keyword.operator.relational.unequal.moocode",
+          "match": "\\!\\="
+        },
+        {
+          "name": "keyword.operator.relational.less-than.moocode",
+          "match": "\\<"
+        },
+        {
+          "name": "keyword.operator.relational.greater-than.moocode",
+          "match": "\\>"
+        },
+        {
+          "name": "keyword.operator.relational.less-or-equal.moocode",
+          "match": "\\<\\="
+        },
+        {
+          "name": "keyword.operator.relational.greater-or-equal.moocode",
+          "match": "\\>\\="
+        },
+        {
+          "name": "keyword.operator.arithmetic.add.moocode",
+          "match": "\\+"
+        },
+        {
+          "name": "keyword.operator.arithmetic.substract.moocode",
+          "match": "\\-"
+        },
+        {
+          "name": "keyword.operator.arithmetic.multiply.moocode",
+          "match": "\\*"
+        },
+        {
+          "name": "keyword.operator.arithmetic.divide.moocode",
+          "match": "\\/"
+        },
+        {
+          "name": "keyword.operator.arithmetic.modulo.moocode",
+          "match": "\\%"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.datatype.integer.moocode",
+          "match": "\\bINT\\b"
+        },
+        {
+          "name": "constant.datatype.number.moocode",
+          "match": "\\bNUM\\b"
+        },
+        {
+          "name": "constant.datatype.float.moocode",
+          "match": "\\bFLOAT\\b"
+        },
+        {
+          "name": "constant.datatype.object.moocode",
+          "match": "\\bOBJ\\b"
+        },
+        {
+          "name": "constant.datatype.string.moocode",
+          "match": "\\bSTR\\b"
+        },
+        {
+          "name": "constant.datatype.list.moocode",
+          "match": "\\bLIST\\b"
+        },
+        {
+          "name": "constant.datatype.error.moocode",
+          "match": "\\bERR\\b"
+        },
+        {
+          "name": "constant.datatype.boolean.moocode",
+          "match": "\\bBOOL\\b"
+        },
+        {
+          "name": "constant.datatype.map.moocode",
+          "match": "\\bMAP\\b"
+        },
+        {
+          "name": "constant.datatype.waif.moocode",
+          "match": "\\bWAIF\\b"
+        },
+        {
+          "name": "constant.datatype.anon.moocode",
+          "match": "\\bANON\\b"
+        },
+        {
+          "name": "constant.errortype.none.moocode",
+          "match": "\\bE_NONE\\b"
+        },
+        {
+          "name": "constant.errortype.type-mismatch.moocode",
+          "match": "\\bE_TYPE\\b"
+        },
+        {
+          "name": "constant.errortype.division-by-zero.moocode",
+          "match": "\\bE_DIV\\b"
+        },
+        {
+          "name": "constant.errortype.permission-denied.moocode",
+          "match": "\\bE_PERM\\b"
+        },
+        {
+          "name": "constant.errortype.property-not-found.moocode",
+          "match": "\\bE_PROPNF\\b"
+        },
+        {
+          "name": "constant.errortype.verb-not-found.moocode",
+          "match": "\\bE_VERBNF\\b"
+        },
+        {
+          "name": "constant.errortype.variable-not-found.moocode",
+          "match": "\\bE_VARNF\\b"
+        },
+        {
+          "name": "constant.errortype.invalid-indirection.moocode",
+          "match": "\\bE_INVIND\\b"
+        },
+        {
+          "name": "constant.errortype.recursive-move.moocode",
+          "match": "\\bE_RECMOVE\\b"
+        },
+        {
+          "name": "constant.errortype.too-many-verb-calls.moocode",
+          "match": "\\bE_MAXREC\\b"
+        },
+        {
+          "name": "constant.errortype.range.moocode",
+          "match": "\\bE_RANGE\\b"
+        },
+        {
+          "name": "constant.errortype.incorrect-number-of-arguments.moocode",
+          "match": "\\bE_ARGS\\b"
+        },
+        {
+          "name": "constant.errortype.move-refused-by-destination.moocode",
+          "match": "\\bE_NACC\\b"
+        },
+        {
+          "name": "constant.errortype.invalid-argument.moocode",
+          "match": "\\bE_INVARG\\b"
+        },
+        {
+          "name": "constant.errortype.resource-limit-exceeded.moocode",
+          "match": "\\bE_QUOTA\\b"
+        },
+        {
+          "name": "constant.errortype.float-arithmetic.moocode",
+          "match": "\\bE_FLOAT\\b"
+        },
+        {
+          "name": "constant.errortype.file-system.moocode",
+          "match": "\\bE_FILE\\b"
+        },
+        {
+          "name": "constant.errortype.execution.moocode",
+          "match": "\\bE_EXEC\\b"
+        },
+        {
+          "name": "constant.errortype.interrupted.moocode",
+          "match": "\\bE_INTRPT\\b"
+        },
+        {
+          "name": "constant.numeric.moocode",
+          "match": "\\b\\d+\\b"
+        },
+        {
+          "name": "constant.boolean.true.moocode",
+          "match": "\\btrue\\b"
+        },
+        {
+          "name": "constant.boolean.false.moocode",
+          "match": "\\bfalse\\b"
+        }
+      ]
+    },
+    "entities": {
+      "patterns": [
+        {
+          "name": "entity.name.function.built-in.moocode",
+          "match": "\\b(typeof|toint|tofloat|toobj|tostr|raise|length|callers|listdelete)\\b"
+        },
+        {
+          "name": "entity.name.function.moocode",
+          "match": "(?<=\\:)\\w+(?=\\()"
+        },
+        {
+          "name": "entity.name.predefined.player.moocode",
+          "match": "\\bplayer\\b"
+        },
+        {
+          "name": "entity.name.predefined.this.moocode",
+          "match": "\\bthis\\b"
+        },
+        {
+          "name": "entity.name.predefined.caller.moocode",
+          "match": "\\bcaller\\b"
+        },
+        {
+          "name": "entity.name.predefined.verb.moocode",
+          "match": "\\bverb\\b"
+        },
+        {
+          "name": "entity.name.predefined.argstr.moocode",
+          "match": "\\bargstr\\b"
+        },
+        {
+          "name": "entity.name.predefined.args.moocode",
+          "match": "\\bargs\\b"
+        },
+        {
+          "name": "entity.name.predefined.dobjstr.moocode",
+          "match": "\\bdobjstr\\b"
+        },
+        {
+          "name": "entity.name.predefined.dobj.moocode",
+          "match": "\\bdobj\\b"
+        },
+        {
+          "name": "entity.name.predefined.prepstr.moocode",
+          "match": "\\bprepstr\\b"
+        },
+        {
+          "name": "entity.name.predefined.iobjstr.moocode",
+          "match": "\\biobjstr\\b"
+        },
+        {
+          "name": "entity.name.predefined.iobj.moocode",
+          "match": "\\biobj\\b"
+        },
+        {
+          "name": "entity.name.variable.corified.moocode",
+          "match": "\\$\\w+"
+        },
+        {
+          "name": "entity.name.property.moocode",
+          "match": "(?<=\\.)\\w+"
+        },
+        {
+          "name": "entity.name.variable.moocode",
+          "match": "\\b\\w+\\b"
+        }
+      ]
+    },
+    "punctuations": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.moocode",
+          "match": ";$"
+        },
+        {
+          "name": "punctuation.separator.comma.moocode",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.decimals.moocode",
+          "match": "(?<=\\d)\\.(?=\\d)"
+        },
+        {
+          "name": "punctuation.parenthesis.open.moocode",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.parenthesis.close.moocode",
+          "match": "\\)"
+        },
+        {
+          "name": "punctuation.curlybrace.open.moocode",
+          "match": "\\{"
+        },
+        {
+          "name": "punctuation.curlybrace.close.moocode",
+          "match": "\\}"
+        },
+        {
+          "name": "punctuation.accessor.property.moocode",
+          "match": "\\."
+        },
+        {
+          "name": "punctuation.accessor.verb.moocode",
+          "match": "\\:"
+        }
+      ]
+    }
+  }
+}

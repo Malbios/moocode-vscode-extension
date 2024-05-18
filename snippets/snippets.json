@@ -1,0 +1,14 @@
+{
+	"For Loop": {
+		"prefix": [
+			"for"
+		],
+		"body": [
+			"for ${2:element} in (${1:array})",
+			"\t$0",
+			"endfor"
+		],
+		"description": "A for loop.",
+		"isFileTemplate": false
+	}
+}

@@ -1,0 +1,36 @@
+{
+  "name": "moocode-client",
+  "version": "1.0.0",
+  "description": "language client for a MOOcode Visual Studio Code extension",
+  "keywords": [],
+  "author": "Malbios",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.88.1"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.11",
+    "@types/vscode": "^1.89.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "chai": "^4.4.1",
+    "eslint": "^8.57.0",
+    "mocha": "^10.4.0",
+    "nyc": "^15.1.0",
+    "rimraf": "^5.0.5",
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
+  },
+  "scripts": {}
+}
