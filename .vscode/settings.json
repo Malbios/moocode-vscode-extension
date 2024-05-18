@@ -8,6 +8,16 @@
         "client/package-lock.json": true,
         "server/package-lock.json": true
     },
+    "eslint.validate": [
+        "typescript"
+    ],
+    "eslint.workingDirectories": [
+        "./"
+    ],
+    "eslint.experimental.useFlatConfig": true,
+    "eslint.options": {
+        "overrideConfigFile": "eslint.config.mjs"
+    },
     "editor.folding": false,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
@@ -26,5 +36,6 @@
     "mochaExplorer.debuggerConfig": "Debug Mocha Tests",
     "mochaExplorer.exit": true,
     "mochaExplorer.globImplementation": "vscode",
-    "mochaExplorer.ui": "tdd",
+    "mochaExplorer.ui": "bdd",
+    "mochaExplorer.configFile": ".mocharc.server.json",
 }
