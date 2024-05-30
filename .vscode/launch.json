@@ -9,7 +9,8 @@
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceRoot}",
-				"--disable-extensions"
+				"--disable-extensions",
+				"${workspaceRoot}/test-workspaces/default"
 			],
 			"outFiles": [
 				"${workspaceRoot}/client/out/**/*.js",
@@ -17,6 +18,15 @@
 			],
 			"autoAttachChildProcesses": true,
 			"preLaunchTask": "npm-build"
+		},
+		{
+			"name": "Debug Mocha Tests",
+			"type": "node",
+			"request": "attach",
+			"port": 9229,
+			"timeout": 30000,
+			"internalConsoleOptions": "openOnSessionStart",
+			"continueOnAttach": true
 		}
 	]
 }

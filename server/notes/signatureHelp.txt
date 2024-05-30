@@ -1,0 +1,299 @@
+export interface SignatureHelpParams extends TextDocumentPositionParams, WorkDoneProgressParams {
+	/**
+	 * The signature help context. This is only available if the client specifies
+	 * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
+	 *
+	 * @since 3.15.0
+	 */
+	context?: SignatureHelpContext;
+}
+
+export interface SignatureHelpContext {
+	/**
+	 * Action that caused signature help to be triggered.
+	 */
+	triggerKind: SignatureHelpTriggerKind;
+	/**
+	 * Character that caused signature help to be triggered.
+	 *
+	 * This is undefined when `triggerKind !== SignatureHelpTriggerKind.TriggerCharacter`
+	 */
+	triggerCharacter?: string;
+	/**
+	 * `true` if signature help was already showing when it was triggered.
+	 *
+	 * Retriggers occurs when the signature help is already active and can be caused by actions such as
+	 * typing a trigger character, a cursor move, or document content changes.
+	 */
+	isRetrigger: boolean;
+	/**
+	 * The currently active `SignatureHelp`.
+	 *
+	 * The `activeSignatureHelp` has its `SignatureHelp.activeSignature` field updated based on
+	 * the user navigating through available signatures.
+	 */
+	activeSignatureHelp?: SignatureHelp;
+}
+
+export interface SignatureHelp {
+	/**
+	 * One or more signatures.
+	 */
+	signatures: SignatureInformation[];
+	/**
+	 * The active signature. If omitted or the value lies outside the
+	 * range of `signatures` the value defaults to zero or is ignored if
+	 * the `SignatureHelp` has no signatures.
+	 *
+	 * Whenever possible implementors should make an active decision about
+	 * the active signature and shouldn't rely on a default value.
+	 *
+	 * In future version of the protocol this property might become
+	 * mandatory to better express this.
+	 */
+	activeSignature?: uinteger;
+	/**
+	 * The active parameter of the active signature. If omitted or the value
+	 * lies outside the range of `signatures[activeSignature].parameters`
+	 * defaults to 0 if the active signature has parameters. If
+	 * the active signature has no parameters it is ignored.
+	 * In future version of the protocol this property might become
+	 * mandatory to better express the active parameter if the
+	 * active signature does have any.
+	 */
+	activeParameter?: uinteger;
+}
+
+export type SignatureHelpTriggerKind = 1 | 2 | 3;
+
+export interface SignatureInformation {
+	/**
+	 * The label of this signature. Will be shown in
+	 * the UI.
+	 */
+	label: string;
+	/**
+	 * The human-readable doc-comment of this signature. Will be shown
+	 * in the UI but can be omitted.
+	 */
+	documentation?: string | MarkupContent;
+	/**
+	 * The parameters of this signature.
+	 */
+	parameters?: ParameterInformation[];
+	/**
+	 * The index of the active parameter.
+	 *
+	 * If provided, this is used in place of `SignatureHelp.activeParameter`.
+	 *
+	 * @since 3.16.0
+	 */
+	activeParameter?: uinteger;
+}
+
+export interface MarkupContent {
+	/**
+	 * The type of the Markup
+	 */
+	kind: MarkupKind;
+	/**
+	 * The content itself
+	 */
+	value: string;
+}
+
+/**
+ * Describes the content type that a client supports in various
+ * result literals like `Hover`, `ParameterInfo` or `CompletionItem`.
+ *
+ * Please note that `MarkupKinds` must not start with a `$`. This kinds
+ * are reserved for internal usage.
+ */
+export declare namespace MarkupKind {
+	/**
+	 * Plain text is supported as a content format
+	 */
+	const PlainText: 'plaintext';
+	/**
+	 * Markdown is supported as a content format
+	 */
+	const Markdown: 'markdown';
+	/**
+	 * Checks whether the given value is a value of the {@link MarkupKind} type.
+	 */
+	function is(value: any): value is MarkupKind;
+}
+export type MarkupKind = 'plaintext' | 'markdown';
+
+export declare namespace MarkupContent {
+	/**
+	 * Checks whether the given value conforms to the {@link MarkupContent} interface.
+	 */
+	function is(value: any): value is MarkupContent;
+}
+
+/**
+ * The SignatureInformation namespace provides helper functions to work with
+ * {@link SignatureInformation} literals.
+ */
+export declare namespace SignatureInformation {
+	function create(label: string, documentation?: string, ...parameters: ParameterInformation[]): SignatureInformation;
+}
+
+export interface TextDocumentPositionParams {
+	/**
+	 * The text document.
+	 */
+	textDocument: TextDocumentIdentifier;
+	/**
+	 * The position inside the text document.
+	 */
+	position: Position;
+}
+
+export interface Position {
+	/**
+	 * Line position in a document (zero-based).
+	 *
+	 * If a line number is greater than the number of lines in a document, it defaults back to the number of lines in the document.
+	 * If a line number is negative, it defaults to 0.
+	 */
+	line: uinteger;
+	/**
+	 * Character offset on a line in a document (zero-based).
+	 *
+	 * The meaning of this offset is determined by the negotiated
+	 * `PositionEncodingKind`.
+	 *
+	 * If the character value is greater than the line length it defaults back to the
+	 * line length.
+	 */
+	character: uinteger;
+}
+
+/**
+ * Represents a parameter of a callable-signature. A parameter can
+ * have a label and a doc-comment.
+ */
+export interface ParameterInformation {
+	/**
+	 * The label of this parameter information.
+	 *
+	 * Either a string or an inclusive start and exclusive end offsets within its containing
+	 * signature label. (see SignatureInformation.label). The offsets are based on a UTF-16
+	 * string representation as `Position` and `Range` does.
+	 *
+	 * *Note*: a label of type string should be a substring of its containing signature label.
+	 * Its intended use case is to highlight the parameter label part in the `SignatureInformation.label`.
+	 */
+	label: string | [uinteger, uinteger];
+	/**
+	 * The human-readable doc-comment of this parameter. Will be shown
+	 * in the UI but can be omitted.
+	 */
+	documentation?: string | MarkupContent;
+}
+/**
+ * The ParameterInformation namespace provides helper functions to work with
+ * {@link ParameterInformation} literals.
+ */
+export declare namespace ParameterInformation {
+	/**
+	 * Creates a new parameter information literal.
+	 *
+	 * @param label A label string.
+	 * @param documentation A doc string.
+	 */
+	function create(label: string | [uinteger, uinteger], documentation?: string): ParameterInformation;
+}
+
+/**
+ * Position in a text document expressed as zero-based line and character
+ * offset. Prior to 3.17 the offsets were always based on a UTF-16 string
+ * representation. So a string of the form `a𐐀b` the character offset of the
+ * character `a` is 0, the character offset of `𐐀` is 1 and the character
+ * offset of b is 3 since `𐐀` is represented using two code units in UTF-16.
+ * Since 3.17 clients and servers can agree on a different string encoding
+ * representation (e.g. UTF-8). The client announces it's supported encoding
+ * via the client capability [`general.positionEncodings`](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#clientCapabilities).
+ * The value is an array of position encodings the client supports, with
+ * decreasing preference (e.g. the encoding at index `0` is the most preferred
+ * one). To stay backwards compatible the only mandatory encoding is UTF-16
+ * represented via the string `utf-16`. The server can pick one of the
+ * encodings offered by the client and signals that encoding back to the
+ * client via the initialize result's property
+ * [`capabilities.positionEncoding`](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#serverCapabilities). If the string value
+ * `utf-16` is missing from the client's capability `general.positionEncodings`
+ * servers can safely assume that the client supports UTF-16. If the server
+ * omits the position encoding in its initialize result the encoding defaults
+ * to the string value `utf-16`. Implementation considerations: since the
+ * conversion from one encoding into another requires the content of the
+ * file / line the conversion is best done where the file is read which is
+ * usually on the server side.
+ *
+ * Positions are line end character agnostic. So you can not specify a position
+ * that denotes `\r|\n` or `\n|` where `|` represents the character offset.
+ *
+ * @since 3.17.0 - support for negotiated position encoding.
+ */
+export interface Position {
+	/**
+	 * Line position in a document (zero-based).
+	 *
+	 * If a line number is greater than the number of lines in a document, it defaults back to the number of lines in the document.
+	 * If a line number is negative, it defaults to 0.
+	 */
+	line: uinteger;
+	/**
+	 * Character offset on a line in a document (zero-based).
+	 *
+	 * The meaning of this offset is determined by the negotiated
+	 * `PositionEncodingKind`.
+	 *
+	 * If the character value is greater than the line length it defaults back to the
+	 * line length.
+	 */
+	character: uinteger;
+}
+/**
+ * The Position namespace provides helper functions to work with
+ * {@link Position} literals.
+ */
+export declare namespace Position {
+	/**
+	 * Creates a new Position literal from the given line and character.
+	 * @param line The position's line.
+	 * @param character The position's character.
+	 */
+	function create(line: uinteger, character: uinteger): Position;
+	/**
+	 * Checks whether the given literal conforms to the {@link Position} interface.
+	 */
+	function is(value: any): value is Position;
+}
+
+export type uinteger = number;
+
+export interface TextDocumentIdentifier {
+	/**
+	 * The text document's uri.
+	 */
+	uri: DocumentUri;
+}
+
+export type DocumentUri = string;
+export declare namespace DocumentUri {
+	function is(value: any): value is DocumentUri;
+}
+
+export interface WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	workDoneToken?: ProgressToken;
+}
+
+export type ProgressToken = number | string;
+export declare namespace ProgressToken {
+	function is(value: any): value is number | string;
+}

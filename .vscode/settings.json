@@ -8,6 +8,21 @@
         "client/package-lock.json": true,
         "server/package-lock.json": true
     },
+    "editor.folding": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "editor.insertSpaces": false,
+    "typescript.tsc.autoDetect": "off",
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
     "eslint.validate": [
         "typescript"
     ],
@@ -18,16 +33,6 @@
     "eslint.options": {
         "overrideConfigFile": "eslint.config.mjs"
     },
-    "editor.folding": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
-    "editor.insertSpaces": false,
-    "typescript.tsc.autoDetect": "off",
-    "typescript.preferences.quoteStyle": "single",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
     "[github-actions-workflow]": {
         "editor.tabSize": 2
     },
@@ -36,6 +41,8 @@
     "mochaExplorer.debuggerConfig": "Debug Mocha Tests",
     "mochaExplorer.exit": true,
     "mochaExplorer.globImplementation": "vscode",
-    "mochaExplorer.ui": "bdd",
-    "mochaExplorer.configFile": ".mocharc.server.json",
+    "mochaExplorer.configFile": "./server/.mocharc.json",
+    "mochaExplorer.cwd": "./server",
+    "mochaExplorer.files": "./server/tests/**/*.ts",
+    "testExplorer.errorDecoration": false,
 }

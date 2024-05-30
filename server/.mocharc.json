@@ -3,8 +3,10 @@
     "extension": [
         "ts"
     ],
-    "spec": "server/tests/**/*.test.ts",
+    "spec": [
+        "tests/**/*.test.ts"
+    ],
+    "ignore": [],
     "require": "ts-node/register",
-    "bail": false,
-    "exit": true
+    "bail": false
 }

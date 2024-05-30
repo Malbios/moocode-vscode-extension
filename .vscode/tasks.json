@@ -37,6 +37,48 @@
 			"problemMatcher": [
 				"$tsc-watch"
 			]
+		},
+		{
+			"presentation": {
+				"clear": true,
+				"showReuseMessage": false,
+				"reveal": "silent",
+				"revealProblems": "onProblem"
+			},
+			"type": "npm",
+			"script": "test",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "npm run test"
+		},
+		{
+			"presentation": {
+				"clear": true,
+				"showReuseMessage": false,
+				"reveal": "silent",
+				"revealProblems": "onProblem"
+			},
+			"type": "npm",
+			"script": "test:mocha:server",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "npm run test:mocha"
+		},
+		{
+			"presentation": {
+				"clear": true,
+				"showReuseMessage": false,
+				"reveal": "silent",
+				"revealProblems": "onProblem"
+			},
+			"type": "npm",
+			"script": "test:mocha:server:custom",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test:custom",
+			"detail": "mocha -g <test-name(s)>"
 		}
 	]
 }

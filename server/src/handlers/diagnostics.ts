@@ -8,17 +8,16 @@ import {
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-import { SettingsHandler } from './settings';
 import { IssueFinder } from '../common/interfaces';
-import { TestIssueFinder } from './diagnostics/testIssue';
+import { SyntaxIssueFinder } from './diagnostics/syntax';
 import { DocumentsHandler } from './documents';
+import { SettingsHandler } from './settings';
 
 export class DiagnosticsHandler {
 	private settingsHandler: SettingsHandler;
 	private documentsHandler: DocumentsHandler;
 
-	// TODO: implement real issue finders
-	private issueFinders: IssueFinder[] = [new TestIssueFinder];
+	private issueFinders: IssueFinder[] = [new SyntaxIssueFinder];
 
 	public constructor(settingsHandler: SettingsHandler, documentsHandler: DocumentsHandler) {
 		this.settingsHandler = settingsHandler;

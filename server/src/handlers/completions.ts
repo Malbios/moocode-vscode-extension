@@ -7,7 +7,7 @@ import {
 } from 'vscode-languageserver/node';
 
 import { DocumentsHandler } from './documents';
-import MooClient from 'moo-client-ts';
+import { MooClient as IMooClient } from 'moo-client-ts/lib/interfaces';
 
 interface CompletionItemData {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,11 +33,11 @@ function getDefaultItems(): CompletionItemData[] {
 
 export class CompletionHandler {
 	private documentsHandler: DocumentsHandler;
-	private mooClient: MooClient;
+	private mooClient: IMooClient;
 
 	private items = getDefaultItems();
 
-	public constructor(documentsHandler: DocumentsHandler, mooClient: MooClient) {
+	public constructor(documentsHandler: DocumentsHandler, mooClient: IMooClient) {
 		this.documentsHandler = documentsHandler;
 		this.mooClient = mooClient;
 	}

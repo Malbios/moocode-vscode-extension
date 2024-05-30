@@ -11,7 +11,10 @@
     "Programming Languages",
     "Snippets"
   ],
-  "author": "Malbios",
+  "publisher": "Malbios",
+  "author": {
+    "name": "Malbios"
+  },
   "license": "MIT",
   "bugs": "https://github.com/Malbios/moocode-vscode-extension/issues",
   "repository": {
@@ -114,7 +117,8 @@
     "watch": "tsc -b -w",
     "test-with-coverage": "npx nyc mocha --config .mocharc.server.json",
     "test:vscode": "vscode-test",
-    "test:mocha:server": "npx mocha --config .mocharc.server.json",
+    "test:mocha:server": "cd server && npx mocha && cd ..",
+    "test:mocha:server:custom": "cd server && npx mocha -g \"signature help tests\" && cd .. ",
     "convert-syntax-yaml": "npx js-yaml ./yaml/syntax.yaml > ./syntaxes/moocode.tmLanguage.json",
     "lint": "npm run lint:fix",
     "lint:check": "npx eslint .",

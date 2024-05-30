@@ -7,19 +7,19 @@ import {
 	_,
 	_Connection,
 } from 'vscode-languageserver/node';
+import { InlineCompletionFeatureShape } from 'vscode-languageserver/lib/common/inlineCompletion.proposed';
+
+import { MooClient as IMooClient } from 'moo-client-ts/lib/interfaces';
 
 import { SettingsHandler } from './handlers/settings';
 import { DocumentsHandler } from './handlers/documents';
 import { DiagnosticsHandler } from './handlers/diagnostics';
-import { CompletionHandler } from './handlers/completion';
-import { SignatureHelpHandler } from './handlers/signatureHelp';
+import { CompletionHandler } from './handlers/completions';
+import { SignatureHelpHandler } from './handlers/signatures';
 import { HoverHandler } from './handlers/hover';
 import { SemanticsHandler } from './handlers/semantics';
 import { DefinitionsHandler } from './handlers/definitions';
 import { ReferencesHandler } from './handlers/references';
-
-import MooClient from 'moo-client-ts';
-import { InlineCompletionFeatureShape } from 'vscode-languageserver/lib/common/inlineCompletion.proposed';
 
 export default class MoocodeServer {
 	private connection: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>;
@@ -30,7 +30,7 @@ export default class MoocodeServer {
 		this.documentHandler = documentHandler;
 	}
 
-	public static create(connection?: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentsHandler?: DocumentsHandler) {
+	public static create(mooClient: IMooClient, connection?: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentsHandler?: DocumentsHandler) {
 		if (connection && documentsHandler) {
 			return new MoocodeServer(connection, documentsHandler);
 		}
@@ -38,9 +38,6 @@ export default class MoocodeServer {
 		connection = createConnection(ProposedFeatures.all);
 
 		documentsHandler = new DocumentsHandler();
-
-		// TODO: get credential from config
-		const mooClient = MooClient.create('127.0.0.1', 7777, 'ServiceAccount', 'osywU');
 
 		const settingsHandler = new SettingsHandler(x => connection.workspace.getConfiguration(x));
 

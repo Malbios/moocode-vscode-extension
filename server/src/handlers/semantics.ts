@@ -38,7 +38,7 @@ export class SemanticsHandler {
 			documentSelector: null,
 			legend: legend,
 			full: true,
-			range: true,
+			range: true
 		};
 	}
 

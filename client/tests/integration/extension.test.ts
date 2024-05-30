@@ -1,5 +1,5 @@
-import 'mocha';
 import { fail } from 'assert';
+import { suite, test } from 'mocha';
 import { extensions } from 'vscode';
 
 suite('extension tests', () => {

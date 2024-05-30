@@ -4,11 +4,11 @@
 			"for"
 		],
 		"body": [
-			"for ${2:element} in (${1:array})",
+			"for ${2:variable} in (${1:list})",
 			"\t$0",
 			"endfor"
 		],
-		"description": "A for loop.",
+		"description": "for loop",
 		"isFileTemplate": false
 	}
 }

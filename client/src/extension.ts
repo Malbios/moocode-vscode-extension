@@ -31,7 +31,8 @@ export function activate(context: ExtensionContext) {
         documentSelector: [{ scheme: 'file', language: 'moocode' }],
         synchronize: {
             fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-        }
+        },
+        outputChannelName: 'MOOcode Language Server'
     };
 
     client = new LanguageClient(
