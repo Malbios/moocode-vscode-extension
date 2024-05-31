@@ -1,4 +1,4 @@
-import { generateAst } from 'moocode-parsing';
+import { Ast } from 'moocode-parsing/lib/interfaces';
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
 import { DiagnosticsInput, IssueFinder } from '../../common/interfaces';
 
@@ -9,11 +9,20 @@ export class SyntaxIssueFinder implements IssueFinder {
 		}
 
 		const text = input.document.getText();
-		const ast = generateAst(text);
+
+		let ast: Ast | undefined = undefined;
+
+		try {
+			ast = input.astCache.generateAst(text);
+		} catch (error: unknown) {
+			console.log(error);
+			return [];
+		}
 
 		let foundErrors = ast.lexerErrors.concat(ast.parserErrors);
+		let invalidStatements = ast.invalid;
 
-		if (foundErrors.length === 0) {
+		if (foundErrors.length === 0 && invalidStatements.length === 0) {
 			return [];
 		}
 
@@ -23,27 +32,58 @@ export class SyntaxIssueFinder implements IssueFinder {
 			const syntaxError = foundErrors[0];
 			foundErrors = foundErrors.slice(1);
 
-			syntaxError.line;
+			const range = {
+				start: { line: syntaxError.line - 1, character: syntaxError.column },
+				end: { line: syntaxError.line - 1, character: syntaxError.column }
+			};
 
 			const diagnostic: Diagnostic = {
 				severity: DiagnosticSeverity.Error,
-				range: {
-					start: { line: syntaxError.line, character: syntaxError.column },
-					end: { line: syntaxError.line, character: syntaxError.column }
-				},
-				message: syntaxError.message,
-				source: 'MOOcode syntax diagnostics'
+				range: range,
+				message: syntaxError.message ?? '<no msg>',
+				source: 'MOOcode syntax diagnostics',
+				relatedInformation: [
+					{
+						location: {
+							uri: input.document.uri,
+							range: Object.assign({}, range)
+						},
+						message: 'check for incorrect syntax'
+					}
+				]
 			};
 
-			diagnostic.relatedInformation = [
-				{
-					location: {
-						uri: input.document.uri,
-						range: Object.assign({}, diagnostic.range)
-					},
-					message: 'idk what to write here'
-				}
-			];
+			diagnostics.push(diagnostic);
+		}
+
+		while (invalidStatements.length > 0 && diagnostics.length < input.maxIssues) {
+			const invalidStatement = invalidStatements[0];
+			invalidStatements = invalidStatements.slice(1);
+
+			if (invalidStatement.error === undefined) {
+				continue;
+			}
+
+			const range = {
+				start: { line: (invalidStatement.position.startToken?.line ?? 0) - 1, character: invalidStatement.position.startToken?.column ?? -1 },
+				end: { line: (invalidStatement.position.stopToken?.line ?? 0) - 1, character: invalidStatement.position.stopToken?.column ?? -1 }
+			};
+
+			const diagnostic: Diagnostic = {
+				severity: DiagnosticSeverity.Error,
+				range: range,
+				message: invalidStatement.error.message ?? '<no msg>',
+				source: 'MOOcode syntax diagnostics',
+				relatedInformation: [
+					{
+						location: {
+							uri: input.document.uri,
+							range: Object.assign({}, range)
+						},
+						message: 'idk what to write here'
+					}
+				]
+			};
 
 			diagnostics.push(diagnostic);
 		}

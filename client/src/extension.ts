@@ -1,8 +1,8 @@
 import * as path from 'path';
 
 import {
-    workspace,
-    ExtensionContext
+    ExtensionContext,
+    workspace
 } from 'vscode';
 
 import {
@@ -19,12 +19,11 @@ export function activate(context: ExtensionContext) {
         path.join('server', 'out', 'index')
     );
 
+    const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
+
     const serverOptions: ServerOptions = {
         run: { module: serverModule, transport: TransportKind.ipc },
-        debug: {
-            module: serverModule,
-            transport: TransportKind.ipc,
-        }
+        debug: { module: serverModule, transport: TransportKind.ipc, options: debugOptions }
     };
 
     const clientOptions: LanguageClientOptions = {

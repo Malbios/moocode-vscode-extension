@@ -44,5 +44,5 @@
     "mochaExplorer.configFile": "./server/.mocharc.json",
     "mochaExplorer.cwd": "./server",
     "mochaExplorer.files": "./server/tests/**/*.ts",
-    "testExplorer.errorDecoration": false,
+    "testExplorer.errorDecoration": false
 }

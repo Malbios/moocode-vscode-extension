@@ -8,5 +8,6 @@
     ],
     "ignore": [],
     "require": "ts-node/register",
-    "bail": false
+    "bail": false,
+    "timeout": 5000
 }

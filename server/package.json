@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "moo-client-ts": "^0.10.0",
-    "moocode-parsing": "^0.8.0",
+    "moocode-parsing": "^0.9.0",
     "promise-socket": "^7.0.0",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.11",

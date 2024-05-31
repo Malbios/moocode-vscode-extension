@@ -1,5 +1,5 @@
 "Creates a player.";
-"Syntax:  @make-player name email-address comments....";
+"Syntax:  @make-player name email-addresss comments....";
 "Generates a random password for the player.";
 if (!player.wizard || callers())
   return E_PERM;
@@ -12,7 +12,7 @@ elseif (args[2] == "for")
 endif
 return $wiz_utils:do_make_player(@args);
 $stuff.blob.bla:sthisia();
-$smurf:
+$stuff();
 var = 0.0;
 (a && b);
 (c || d);

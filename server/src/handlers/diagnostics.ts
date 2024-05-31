@@ -3,64 +3,69 @@ import {
 	DiagnosticOptions,
 	DocumentDiagnosticParams,
 	DocumentDiagnosticReport,
-	DocumentDiagnosticReportKind
+	DocumentDiagnosticReportKind,
+	FullDocumentDiagnosticReport
 } from 'vscode-languageserver';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
+import { AstCache } from '../common/ast-cache';
 import { IssueFinder } from '../common/interfaces';
 import { SyntaxIssueFinder } from './diagnostics/syntax';
 import { DocumentsHandler } from './documents';
-import { SettingsHandler } from './settings';
+
+const emptyDiagnosticResult: FullDocumentDiagnosticReport = {
+	kind: DocumentDiagnosticReportKind.Full,
+	items: []
+};
 
 export class DiagnosticsHandler {
-	private settingsHandler: SettingsHandler;
-	private documentsHandler: DocumentsHandler;
+	private _documentsHandler: DocumentsHandler;
+	private _astCache: AstCache;
 
-	private issueFinders: IssueFinder[] = [new SyntaxIssueFinder];
+	private _issueFinders: IssueFinder[] = [new SyntaxIssueFinder];
 
-	public constructor(settingsHandler: SettingsHandler, documentsHandler: DocumentsHandler) {
-		this.settingsHandler = settingsHandler;
-		this.documentsHandler = documentsHandler;
+	public constructor(documentsHandler: DocumentsHandler, astCache: AstCache) {
+		this._documentsHandler = documentsHandler;
+		this._astCache = astCache;
 	}
 
 	public getConfiguration(): DiagnosticOptions {
 		return {
 			interFileDependencies: false,
-			workspaceDiagnostics: false
+			workspaceDiagnostics: false,
 		};
 	}
 
-	public async handleDiagnostics(params: DocumentDiagnosticParams): Promise<DocumentDiagnosticReport> {
-		const document = this.documentsHandler.get(params.textDocument.uri);
-		if (document !== undefined) {
-			return {
-				kind: DocumentDiagnosticReportKind.Full,
-				items: await this.validateTextDocument(document)
-			} satisfies DocumentDiagnosticReport;
-		} else {
-			return {
-				kind: DocumentDiagnosticReportKind.Full,
-				items: []
-			} satisfies DocumentDiagnosticReport;
+	public handleDiagnostics(params: DocumentDiagnosticParams, maxNumberOfProblems: number): DocumentDiagnosticReport {
+		const document = this._documentsHandler.get(params.textDocument.uri);
+
+		if (!document) {
+			return emptyDiagnosticResult;
 		}
+
+		const diagnostics = this.validateTextDocument(document, maxNumberOfProblems);
+
+		//void connection.sendNotification(StatusNotification.type, { uri: document.uri, state: Status.ok, validationTime: timeTaken });
+
+		return {
+			kind: DocumentDiagnosticReportKind.Full,
+			items: diagnostics
+		};
+
 	}
 
-	public async validateTextDocument(textDocument: TextDocument): Promise<Diagnostic[]> {
-		const settings = await this.settingsHandler.getSettings(textDocument.uri);
+	public validateTextDocument(textDocument: TextDocument, maxNumberOfProblems: number): Diagnostic[] {
+		let diagnostics: Diagnostic[] = [];
 
-		const diagnostics: Diagnostic[] = [];
-		let problems = 0;
-
-		for (const issueFinder of this.issueFinders) {
+		for (const issueFinder of this._issueFinders) {
 			const foundIssues = issueFinder.find(
-				{ maxIssues: settings.maxNumberOfProblems - problems, document: textDocument }
+				{ maxIssues: maxNumberOfProblems - diagnostics.length, document: textDocument, astCache: this._astCache }
 			);
 
-			diagnostics.concat(foundIssues);
-			problems += foundIssues.length;
+			diagnostics = diagnostics.concat(foundIssues);
 
-			if (problems >= settings.maxNumberOfProblems) {
+			if (diagnostics.length >= maxNumberOfProblems) {
 				break;
 			}
 		}

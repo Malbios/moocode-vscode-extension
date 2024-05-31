@@ -3,36 +3,45 @@ import {
 	HoverOptions,
 	HoverParams
 } from 'vscode-languageserver/node';
-
+import { AstCache } from '../common/ast-cache';
 import { DocumentsHandler } from './documents';
 
 export class HoverHandler {
-	private documentsHandler: DocumentsHandler;
+	private _documentsHandler: DocumentsHandler;
+	private _astCache: AstCache;
 
-	public constructor(documents: DocumentsHandler) {
-		this.documentsHandler = documents;
+	public constructor(documents: DocumentsHandler, astCache: AstCache) {
+		this._documentsHandler = documents;
+		this._astCache = astCache;
 	}
-	
+
 	public getConfiguration(): HoverOptions {
 		return { workDoneProgress: false };
 	}
 
 	public onHover(params: HoverParams): Hover | null {
-		const document = this.documentsHandler.get(params.textDocument.uri);
 		const position = params.position;
-	
-		// TODO: Implement hover information logic here and return relevant details
+		const document = this._documentsHandler.get(params.textDocument.uri);
 
-		return null;
-	}
+		if (!document) {
+			return null;
+		}
 
-	private getEmptyHover(): Hover {
-		return { contents: '' };
-	}
+		const ast = this._astCache.generateAst(document.getText());
 
-	private getTestHover(): Hover {
+		const nodes = ast.valid.filter(x => (x.position.startToken?.line ?? 0) <= (position.line + 1) && (x.position.startToken?.column ?? 0) <= position.character && (x.position.stopToken?.line ?? 0) >= (position.line + 1) && (x.position.stopToken?.column ?? 0) >= position.character);
+
+		const closestNode = nodes.at(nodes.length - 1);
+
+		if (!closestNode) {
+			return null;
+		}
+
+		// TODO: does not work in if statement (probably neither in the other complex statements)
+		// TODO: find closest element in closest node (nodevisitor?) and return relevant info
+
 		return {
-			contents: { kind: 'markdown', value: '**hover**\ntest' }
+			contents: { kind: 'markdown', value: `**${closestNode.toString(false)}**\\\n\\<useful info here\\>` }
 		};
 	}
 }

@@ -1,56 +1,70 @@
+import { MooClient } from 'moo-client-ts';
+import { MooClient as IMooClient } from 'moo-client-ts/lib/interfaces';
+import { InlineCompletionFeatureShape } from 'vscode-languageserver/lib/common/inlineCompletion.proposed';
 import {
-	createConnection,
-	InitializeParams,
 	DidChangeConfigurationNotification,
+	InitializeParams,
 	InitializeResult,
 	ProposedFeatures,
 	_,
 	_Connection,
+	createConnection,
 } from 'vscode-languageserver/node';
-import { InlineCompletionFeatureShape } from 'vscode-languageserver/lib/common/inlineCompletion.proposed';
-
-import { MooClient as IMooClient } from 'moo-client-ts/lib/interfaces';
-
-import { SettingsHandler } from './handlers/settings';
-import { DocumentsHandler } from './handlers/documents';
-import { DiagnosticsHandler } from './handlers/diagnostics';
+import { AstCache } from './common/ast-cache';
 import { CompletionHandler } from './handlers/completions';
-import { SignatureHelpHandler } from './handlers/signatures';
-import { HoverHandler } from './handlers/hover';
-import { SemanticsHandler } from './handlers/semantics';
 import { DefinitionsHandler } from './handlers/definitions';
+import { DiagnosticsHandler } from './handlers/diagnostics';
+import { DocumentsHandler } from './handlers/documents';
+import { HoverHandler } from './handlers/hover';
 import { ReferencesHandler } from './handlers/references';
+import { SemanticsHandler } from './handlers/semantics';
+import { SettingsHandler } from './handlers/settings';
+import { SignatureHelpHandler } from './handlers/signatures';
 
 export default class MoocodeServer {
 	private connection: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>;
 	private documentHandler: DocumentsHandler;
+	private _astCache: AstCache;
 
-	private constructor(connection: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentHandler: DocumentsHandler) {
-		this.connection = connection;
-		this.documentHandler = documentHandler;
+	public get AstCache() {
+		return this._astCache;
 	}
 
-	public static create(mooClient: IMooClient, connection?: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentsHandler?: DocumentsHandler) {
-		if (connection && documentsHandler) {
-			return new MoocodeServer(connection, documentsHandler);
+	private constructor(connection: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentHandler: DocumentsHandler, astCache: AstCache) {
+		this.connection = connection;
+		this.documentHandler = documentHandler;
+		this._astCache = astCache;
+	}
+
+	public static create(mooClient?: IMooClient, connection?: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>, documentsHandler?: DocumentsHandler, astCache?: AstCache) {
+		if (!mooClient) {
+			// TODO: get credential from config
+			mooClient = MooClient.create('87.106.230.58', 7777, 'ServiceAccount', 'osywU');
 		}
 
-		connection = createConnection(ProposedFeatures.all);
+		if (!connection) {
+			connection = createConnection(ProposedFeatures.all);
+		}
 
-		documentsHandler = new DocumentsHandler();
+		if (!documentsHandler) {
+			documentsHandler = new DocumentsHandler();
+		}
+
+		if (!astCache) {
+			astCache = new AstCache();
+		}
 
 		const settingsHandler = new SettingsHandler(x => connection.workspace.getConfiguration(x));
 
-		const diagnosticsHandler = new DiagnosticsHandler(settingsHandler, documentsHandler);
+		const diagnosticsHandler = new DiagnosticsHandler(documentsHandler, astCache);
 		const completionHandler = new CompletionHandler(documentsHandler, mooClient);
 		const signatureHelpHandler = new SignatureHelpHandler(documentsHandler);
-		const hoverHandler = new HoverHandler(documentsHandler);
+		const hoverHandler = new HoverHandler(documentsHandler, astCache);
 		const semanticsHandler = new SemanticsHandler(documentsHandler);
 		const definitionsHandler = new DefinitionsHandler(documentsHandler);
 		const referencesHandler = new ReferencesHandler(documentsHandler);
 
 		documentsHandler.initializeOnDidClose(x => settingsHandler.delete(x.document.uri));
-		documentsHandler.initializeOnDidChangeContent(x => diagnosticsHandler.validateTextDocument(x.document));
 
 		connection.onInitialize((params: InitializeParams): InitializeResult => {
 			console.log(params.capabilities);
@@ -88,7 +102,9 @@ export default class MoocodeServer {
 			connection.languages.diagnostics.refresh();
 		});
 
-		connection.languages.diagnostics.on(x => diagnosticsHandler.handleDiagnostics(x));
+		connection.languages.diagnostics.on(async documentDiagnosticParams => {
+			return diagnosticsHandler.handleDiagnostics(documentDiagnosticParams, (await settingsHandler.getSettings(documentDiagnosticParams.textDocument.uri)).maxNumberOfProblems);
+		});
 
 		connection.onCompletion(x => completionHandler.onCompletion(x));
 		connection.onCompletionResolve(x => completionHandler.onCompletionResolve(x));
@@ -114,7 +130,7 @@ export default class MoocodeServer {
 			throw Error('file change not yet supported');
 		});
 
-		return new MoocodeServer(connection, documentsHandler);
+		return new MoocodeServer(connection, documentsHandler, astCache);;
 	}
 
 	public listen() {

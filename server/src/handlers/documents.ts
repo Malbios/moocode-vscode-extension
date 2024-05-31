@@ -1,11 +1,13 @@
 import {
-	Diagnostic,
 	TextDocumentChangeEvent,
 	TextDocumentSyncKind,
-	TextDocuments
+	TextDocuments,
+	_,
+	_Connection
 } from 'vscode-languageserver';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import { InlineCompletionFeatureShape } from 'vscode-languageserver/lib/common/inlineCompletion.proposed';
 
 export class DocumentsHandler {
 	private documents = new TextDocuments<TextDocument>(TextDocument);
@@ -14,24 +16,15 @@ export class DocumentsHandler {
 		return TextDocumentSyncKind.Incremental;
 	}
 
-	public initializeOnDidClose(x: {
-		(x: { document: { uri: string; }; }): void;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(e: TextDocumentChangeEvent<TextDocument>): any;
-	}) {
+	public initializeOnDidClose(x: (eventArguments: TextDocumentChangeEvent<TextDocument>) => void) {
 		this.documents.onDidClose(x);
 	}
 
-	public initializeOnDidChangeContent(x: {
-		(x: { document: TextDocument; }): Promise<Diagnostic[]>;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(e: TextDocumentChangeEvent<TextDocument>): any;
-	}) {
+	public initializeOnDidChangeContent(x: (eventArguments: TextDocumentChangeEvent<TextDocument>) => void) {
 		this.documents.onDidChangeContent(x);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public listen(connection: any) {
+	public listen(connection: _Connection<_, _, _, _, _, _, InlineCompletionFeatureShape, _>) {
 		this.documents.listen(connection);
 	}
 
